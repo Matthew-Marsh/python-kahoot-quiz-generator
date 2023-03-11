@@ -1,5 +1,5 @@
 """
-This is a program that gets questions from Open Trivia Database and prints them to the screen.
+This is a program that gets questions from Open Trivia Database and prints them to an xlsx file.
 """
 
 import datetime
@@ -39,7 +39,8 @@ def print_to_xlsx(question_list, new_file_name: str):
         sheet.cell(row=i, column=4).value = question_list.question_list[i-9].answers[1]
         sheet.cell(row=i, column=5).value = question_list.question_list[i-9].answers[2]
         sheet.cell(row=i, column=6).value = question_list.question_list[i-9].answers[3]
-        sheet.cell(row=i, column=7).value = question_list.question_list[i-9].correct_answer_number
+        sheet.cell(row=i, column=7).value = "60"
+        sheet.cell(row=i, column=8).value = question_list.question_list[i-9].correct_answer_number
 
     file.save(f'generated_quizzes/{new_file_name}')
 
