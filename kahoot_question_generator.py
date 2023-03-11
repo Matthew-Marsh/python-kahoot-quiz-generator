@@ -27,10 +27,10 @@ def create_new_xlsx_file(new_file_name: str):
     shutil.copy2('Kahoot-Quiz-Spreadsheet-Template.xlsx', f'generated_quizzes/{new_file_name}')
 
 
-def print_to_xlsx(question_list, new_file_name: str):
+def print_to_xlsx(question_list: object, new_file_name: str):
     '''This function will print the questions to the xlsx file'''
-    file = openpyxl.load_workbook(f'generated_quizzes/{new_file_name}')
-    sheet = file.active
+    file: object = openpyxl.load_workbook(f'generated_quizzes/{new_file_name}')
+    sheet: object = file.active
 
     num_of_questions: int = question_list.num_of_questions()
     for i in range(9, num_of_questions + 9):
