@@ -6,6 +6,7 @@ import datetime
 from html import unescape
 import random
 import shutil
+import openpyxl
 import requests
 
 
@@ -18,10 +19,7 @@ def main():
     request: object = get_questions_from_db(20)
     question_list: QuestionList = process_json_for_questions(request)
 
-    for question in question_list:
-        print(question.question)
-        print(question.answers)
-        print(f"Correct Answer: {question.correct_answer_number}")
+    print_to_xlsx(question_list, new_file_name)
 
 
 def create_new_xlsx_file(new_file_name: str):
@@ -29,6 +27,21 @@ def create_new_xlsx_file(new_file_name: str):
     shutil.copy2('Kahoot-Quiz-Spreadsheet-Template.xlsx', f'generated_quizzes/{new_file_name}')
 
 
+def print_to_xlsx(question_list, new_file_name: str):
+    '''This function will print the questions to the xlsx file'''
+    file = openpyxl.load_workbook(f'generated_quizzes/{new_file_name}')
+    sheet = file.active
+
+    num_of_questions: int = question_list.num_of_questions()
+    for i in range(9, num_of_questions + 9):
+        sheet.cell(row=i, column=2).value = question_list.question_list[i-9].question
+        sheet.cell(row=i, column=3).value = question_list.question_list[i-9].answers[0]
+        sheet.cell(row=i, column=4).value = question_list.question_list[i-9].answers[1]
+        sheet.cell(row=i, column=5).value = question_list.question_list[i-9].answers[2]
+        sheet.cell(row=i, column=6).value = question_list.question_list[i-9].answers[3]
+        sheet.cell(row=i, column=7).value = question_list.question_list[i-9].correct_answer_number
+
+    file.save(f'generated_quizzes/{new_file_name}')
 
 
 def process_json_for_questions(request : object) -> object:
