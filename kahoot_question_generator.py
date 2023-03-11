@@ -12,13 +12,16 @@ import requests
 
 def main():
     """This is the main function."""
+    # Create copy xlsx file from the Kahoot Template
     date_time: str = f"{datetime.date.today()}-{datetime.datetime.now().time().strftime('%H-%M')}"
     new_file_name: str = f"{date_time}-kahoot-quiz.xlsx"
     create_new_xlsx_file(new_file_name)
 
+    # Get questions from Open Trivia Database
     request: object = get_questions_from_db(20)
     question_list: QuestionList = process_json_for_questions(request)
 
+    # Save questions to xlsx file
     print_to_xlsx(question_list, new_file_name)
 
 
@@ -32,6 +35,7 @@ def print_to_xlsx(question_list: object, new_file_name: str):
     file: object = openpyxl.load_workbook(f'generated_quizzes/{new_file_name}')
     sheet: object = file.active
 
+    # Add questions to xlsx file
     num_of_questions: int = question_list.num_of_questions()
     for i in range(9, num_of_questions + 9):
         sheet.cell(row=i, column=2).value = question_list.question_list[i-9].question
